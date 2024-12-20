@@ -1,0 +1,15 @@
+query RunInput {
+  cart {
+    lines {
+      id
+      quantity
+      upsellProduct: attribute (key: "_upsellProduct") {
+        key
+        value
+      }
+    }
+    upsellBundleDiscount: attribute (key: "_upsellBundleDiscount") {
+      value
+    }
+  }
+}
