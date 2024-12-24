@@ -126,6 +126,11 @@ function Extension() {
                 }
               }
             }
+            productUpsell: metafield (namespace: "custom", key: "product_upsell") {
+              key
+              namespace
+              value
+            }
           }
         }`,
         {
@@ -149,13 +154,13 @@ function Extension() {
     <>
       <Heading level={2}>You may also like</Heading>
       {upsellProducts.map((item, index) =>
-        <UpsellProduct product={item.product} key={index} index={index} />
+        <UpsellProduct product={item.product} key={index} index={index} fetchProduct={fetchProduct} />
       )}
     </>
   )
 }
 
-function UpsellProduct({ product, index }) {
+function UpsellProduct({ product, index, fetchProduct }) {
 
   // Shopify hooks
   const applyCartLineChange = useApplyCartLinesChange();
@@ -185,8 +190,9 @@ function UpsellProduct({ product, index }) {
         quantity: 1
       });
       setIsAddingToCart(false);
-      setIsAddedToCart(true)
-      ui.overlay.close(`product-modal-${index}`)
+      setIsAddedToCart(true);
+      ui.overlay.close(`product-modal-${index}`);
+      fetchProduct(product.productUpsell.value);
     }
     catch (error) {
       console.log(error);
